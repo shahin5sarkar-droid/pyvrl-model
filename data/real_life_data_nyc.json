@@ -1,0 +1,182 @@
+{
+  "name": "New York City Last-Mile E-Commerce Delivery",
+  "description": "Real-world NYC distribution scenario: 1 Central Depot in Long Island City servicing 12 retail & residential delivery stops across Manhattan and Brooklyn.",
+  "depots": [
+    {
+      "id": "depot_lic",
+      "x": -73.9352,
+      "y": 40.7484,
+      "name": "Long Island City Fulfillment Center",
+      "tw_early": 0,
+      "tw_late": 36000,
+      "service_duration": 0
+    }
+  ],
+  "clients": [
+    {
+      "id": "cust_midtown_01",
+      "x": -73.9855,
+      "y": 40.7580,
+      "name": "Times Square Store (Midtown)",
+      "delivery": 18,
+      "pickup": 0,
+      "service_duration": 900,
+      "tw_early": 3600,
+      "tw_late": 14400,
+      "required": true
+    },
+    {
+      "id": "cust_ues_02",
+      "x": -73.9566,
+      "y": 40.7736,
+      "name": "Upper East Side Retail Outlet",
+      "delivery": 22,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 7200,
+      "tw_late": 18000,
+      "required": true
+    },
+    {
+      "id": "cust_fidi_03",
+      "x": -74.0090,
+      "y": 40.7061,
+      "name": "Financial District Branch",
+      "delivery": 15,
+      "pickup": 0,
+      "service_duration": 900,
+      "tw_early": 1800,
+      "tw_late": 12600,
+      "required": true
+    },
+    {
+      "id": "cust_williamsburg_04",
+      "x": -73.9571,
+      "y": 40.7182,
+      "name": "Williamsburg Boutique (Brooklyn)",
+      "delivery": 12,
+      "pickup": 0,
+      "service_duration": 600,
+      "tw_early": 5400,
+      "tw_late": 21600,
+      "required": true
+    },
+    {
+      "id": "cust_dumbo_05",
+      "x": -73.9893,
+      "y": 40.7033,
+      "name": "DUMBO Tech Hub (Brooklyn)",
+      "delivery": 25,
+      "pickup": 0,
+      "service_duration": 1500,
+      "tw_early": 9000,
+      "tw_late": 25200,
+      "required": true
+    },
+    {
+      "id": "cust_chelsea_06",
+      "x": -74.0014,
+      "y": 40.7465,
+      "name": "Chelsea Market Vendor",
+      "delivery": 30,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 10800,
+      "tw_late": 27000,
+      "required": true
+    },
+    {
+      "id": "cust_soho_07",
+      "x": -74.0000,
+      "y": 40.7233,
+      "name": "SoHo Fashion Store",
+      "delivery": 14,
+      "pickup": 0,
+      "service_duration": 900,
+      "tw_early": 7200,
+      "tw_late": 23400,
+      "required": true
+    },
+    {
+      "id": "cust_harlem_08",
+      "x": -73.9465,
+      "y": 40.8116,
+      "name": "Harlem Community Center",
+      "delivery": 20,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 14400,
+      "tw_late": 32400,
+      "required": true
+    },
+    {
+      "id": "cust_astoria_09",
+      "x": -73.9213,
+      "y": 40.7644,
+      "name": "Astoria Supermarket (Queens)",
+      "delivery": 28,
+      "pickup": 0,
+      "service_duration": 1500,
+      "tw_early": 1800,
+      "tw_late": 16200,
+      "required": true
+    },
+    {
+      "id": "cust_parkslope_10",
+      "x": -73.9810,
+      "y": 40.6711,
+      "name": "Park Slope Organic Co-op",
+      "delivery": 16,
+      "pickup": 0,
+      "service_duration": 900,
+      "tw_early": 12600,
+      "tw_late": 28800,
+      "required": true
+    },
+    {
+      "id": "cust_midtown_east_11",
+      "x": -73.9712,
+      "y": 40.7549,
+      "name": "Grand Central Terminal Kiosk",
+      "delivery": 10,
+      "pickup": 0,
+      "service_duration": 600,
+      "tw_early": 3600,
+      "tw_late": 18000,
+      "required": true
+    },
+    {
+      "id": "cust_greenwich_12",
+      "x": -74.0021,
+      "y": 40.7336,
+      "name": "Greenwich Village Cafe",
+      "delivery": 8,
+      "pickup": 0,
+      "service_duration": 600,
+      "tw_early": 5400,
+      "tw_late": 21600,
+      "required": true
+    }
+  ],
+  "vehicle_types": [
+    {
+      "id": "nyc_van_fleet",
+      "name": "Electric Delivery Van",
+      "num_available": 3,
+      "capacity": 85,
+      "fixed_cost": 200,
+      "max_duration": 32400,
+      "unit_distance_cost": 1,
+      "unit_duration_cost": 1
+    }
+  ],
+  "matrix": {
+    "speed_factor": 1.0,
+    "scale_factor": 1000.0
+  },
+  "config": {
+    "max_runtime_seconds": 3.0,
+    "max_iterations": 2000,
+    "seed": 42
+  }
+}

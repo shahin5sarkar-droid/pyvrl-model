@@ -1,0 +1,191 @@
+{
+  "name": "Northeast India Interstate Logistics & Supply Chain",
+  "description": "Real-world Northeast India distribution network: 2 Hubs (Guwahati Assam & Siliguri Transit) servicing 12 major cities across all 8 Northeast states (Meghalaya, Tripura, Manipur, Mizoram, Nagaland, Arunachal Pradesh, Sikkim, and Assam).",
+  "depots": [
+    {
+      "id": "hub_guwahati",
+      "x": 91.7362,
+      "y": 26.1445,
+      "name": "Guwahati Gateway Logistics Hub (Assam)",
+      "tw_early": 0,
+      "tw_late": 43200,
+      "service_duration": 0
+    },
+    {
+      "id": "hub_siliguri",
+      "x": 88.3953,
+      "y": 26.7271,
+      "name": "Siliguri Transit Hub (North Bengal)",
+      "tw_early": 0,
+      "tw_late": 43200,
+      "service_duration": 0
+    }
+  ],
+  "clients": [
+    {
+      "id": "city_shillong",
+      "x": 91.8933,
+      "y": 25.5788,
+      "name": "Shillong Distribution Depot (Meghalaya)",
+      "delivery": 35,
+      "pickup": 0,
+      "service_duration": 1500,
+      "tw_early": 3600,
+      "tw_late": 18000,
+      "required": true
+    },
+    {
+      "id": "city_agartala",
+      "x": 91.2868,
+      "y": 23.8315,
+      "name": "Agartala Supply Terminal (Tripura)",
+      "delivery": 40,
+      "pickup": 0,
+      "service_duration": 1800,
+      "tw_early": 7200,
+      "tw_late": 28800,
+      "required": true
+    },
+    {
+      "id": "city_imphal",
+      "x": 93.9368,
+      "y": 24.8170,
+      "name": "Imphal Regional Warehouse (Manipur)",
+      "delivery": 30,
+      "pickup": 0,
+      "service_duration": 1500,
+      "tw_early": 9000,
+      "tw_late": 32400,
+      "required": true
+    },
+    {
+      "id": "city_aizawl",
+      "x": 92.7176,
+      "y": 23.7271,
+      "name": "Aizawl Commercial Depot (Mizoram)",
+      "delivery": 25,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 10800,
+      "tw_late": 36000,
+      "required": true
+    },
+    {
+      "id": "city_kohima",
+      "x": 94.1086,
+      "y": 25.6751,
+      "name": "Kohima Inland Terminal (Nagaland)",
+      "delivery": 28,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 7200,
+      "tw_late": 25200,
+      "required": true
+    },
+    {
+      "id": "city_itanagar",
+      "x": 93.6053,
+      "y": 27.0844,
+      "name": "Itanagar Logistics Outpost (Arunachal Pradesh)",
+      "delivery": 22,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 5400,
+      "tw_late": 21600,
+      "required": true
+    },
+    {
+      "id": "city_gangtok",
+      "x": 88.6065,
+      "y": 27.3389,
+      "name": "Gangtok Mountain Terminal (Sikkim)",
+      "delivery": 20,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 3600,
+      "tw_late": 19800,
+      "required": true
+    },
+    {
+      "id": "city_dibrugarh",
+      "x": 94.9120,
+      "y": 27.4728,
+      "name": "Dibrugarh Upper Assam Depot (Assam)",
+      "delivery": 45,
+      "pickup": 0,
+      "service_duration": 1800,
+      "tw_early": 9000,
+      "tw_late": 32400,
+      "required": true
+    },
+    {
+      "id": "city_silchar",
+      "x": 92.7789,
+      "y": 24.8333,
+      "name": "Silchar Barak Valley Hub (Assam)",
+      "delivery": 35,
+      "pickup": 0,
+      "service_duration": 1500,
+      "tw_early": 7200,
+      "tw_late": 27000,
+      "required": true
+    },
+    {
+      "id": "city_tezpur",
+      "x": 92.7926,
+      "y": 26.6528,
+      "name": "Tezpur North Bank Depot (Assam)",
+      "delivery": 25,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 3600,
+      "tw_late": 18000,
+      "required": true
+    },
+    {
+      "id": "city_jorhat",
+      "x": 94.2037,
+      "y": 26.7509,
+      "name": "Jorhat Tea Logistics Outpost (Assam)",
+      "delivery": 30,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 5400,
+      "tw_late": 23400,
+      "required": true
+    },
+    {
+      "id": "city_dimapur",
+      "x": 93.7274,
+      "y": 25.9064,
+      "name": "Dimapur Freight Yard (Nagaland)",
+      "delivery": 38,
+      "pickup": 0,
+      "service_duration": 1500,
+      "tw_early": 5400,
+      "tw_late": 21600,
+      "required": true
+    }
+  ],
+  "vehicle_types": [
+    {
+      "id": "ne_india_truck_fleet",
+      "name": "Hill Terrain Heavy Truck",
+      "num_available": 4,
+      "capacity": 120,
+      "fixed_cost": 300,
+      "max_duration": 43200,
+      "unit_distance_cost": 1,
+      "unit_duration_cost": 1
+    }
+  ],
+  "matrix": {
+    "speed_factor": 1.0,
+    "scale_factor": 100.0
+  },
+  "config": {
+    "max_runtime_seconds": 3.0,
+    "max_iterations": 2500,
+    "seed": 42
+  }
+}

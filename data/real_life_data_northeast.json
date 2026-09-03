@@ -1,0 +1,227 @@
+{
+  "name": "US Northeast Corridor Interstate Freight Logistics",
+  "description": "Real-world US Northeast regional freight distribution: 2 Hubs (Newark NJ & Boston MA) servicing 15 major cities across NYC, Philadelphia, Baltimore, DC, Hartford, Providence, Albany, and Scranton.",
+  "depots": [
+    {
+      "id": "hub_newark",
+      "x": -74.1724,
+      "y": 40.7357,
+      "name": "Newark Central Logistics Hub (NJ)",
+      "tw_early": 0,
+      "tw_late": 43200,
+      "service_duration": 0
+    },
+    {
+      "id": "hub_boston",
+      "x": -71.0589,
+      "y": 42.3601,
+      "name": "Boston Northern Logistics Hub (MA)",
+      "tw_early": 0,
+      "tw_late": 43200,
+      "service_duration": 0
+    }
+  ],
+  "clients": [
+    {
+      "id": "city_nyc",
+      "x": -74.0060,
+      "y": 40.7128,
+      "name": "New York City Terminal (NY)",
+      "delivery": 65,
+      "pickup": 0,
+      "service_duration": 1800,
+      "tw_early": 3600,
+      "tw_late": 21600,
+      "required": true
+    },
+    {
+      "id": "city_philly",
+      "x": -75.1652,
+      "y": 39.9526,
+      "name": "Philadelphia Distribution Center (PA)",
+      "delivery": 55,
+      "pickup": 0,
+      "service_duration": 1800,
+      "tw_early": 5400,
+      "tw_late": 25200,
+      "required": true
+    },
+    {
+      "id": "city_baltimore",
+      "x": -76.6122,
+      "y": 39.2904,
+      "name": "Baltimore Freight Port (MD)",
+      "delivery": 45,
+      "pickup": 0,
+      "service_duration": 1500,
+      "tw_early": 7200,
+      "tw_late": 28800,
+      "required": true
+    },
+    {
+      "id": "city_dc",
+      "x": -77.0369,
+      "y": 38.9072,
+      "name": "Washington DC Logistics Hub (DC)",
+      "delivery": 50,
+      "pickup": 0,
+      "service_duration": 1800,
+      "tw_early": 9000,
+      "tw_late": 32400,
+      "required": true
+    },
+    {
+      "id": "city_hartford",
+      "x": -72.6734,
+      "y": 41.7658,
+      "name": "Hartford Regional Hub (CT)",
+      "delivery": 35,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 3600,
+      "tw_late": 18000,
+      "required": true
+    },
+    {
+      "id": "city_providence",
+      "x": -71.4128,
+      "y": 41.8240,
+      "name": "Providence Marine Terminal (RI)",
+      "delivery": 30,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 5400,
+      "tw_late": 21600,
+      "required": true
+    },
+    {
+      "id": "city_albany",
+      "x": -73.7562,
+      "y": 42.6526,
+      "name": "Albany Inland Depot (NY)",
+      "delivery": 40,
+      "pickup": 0,
+      "service_duration": 1500,
+      "tw_early": 7200,
+      "tw_late": 25200,
+      "required": true
+    },
+    {
+      "id": "city_scranton",
+      "x": -75.6624,
+      "y": 41.4089,
+      "name": "Scranton Logistics Outpost (PA)",
+      "delivery": 25,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 9000,
+      "tw_late": 28800,
+      "required": true
+    },
+    {
+      "id": "city_allentown",
+      "x": -75.4714,
+      "y": 40.6023,
+      "name": "Allentown Cross-Dock (PA)",
+      "delivery": 30,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 3600,
+      "tw_late": 19800,
+      "required": true
+    },
+    {
+      "id": "city_newhaven",
+      "x": -72.9279,
+      "y": 41.3083,
+      "name": "New Haven Port Depot (CT)",
+      "delivery": 28,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 1800,
+      "tw_late": 16200,
+      "required": true
+    },
+    {
+      "id": "city_trenton",
+      "x": -74.7597,
+      "y": 40.2206,
+      "name": "Trenton Supply Station (NJ)",
+      "delivery": 20,
+      "pickup": 0,
+      "service_duration": 900,
+      "tw_early": 1800,
+      "tw_late": 14400,
+      "required": true
+    },
+    {
+      "id": "city_worcester",
+      "x": -71.8023,
+      "y": 42.2626,
+      "name": "Worcester Distribution Hub (MA)",
+      "delivery": 32,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 3600,
+      "tw_late": 19800,
+      "required": true
+    },
+    {
+      "id": "city_portland",
+      "x": -70.2568,
+      "y": 43.6591,
+      "name": "Portland Coastal Depot (ME)",
+      "delivery": 22,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 10800,
+      "tw_late": 36000,
+      "required": true
+    },
+    {
+      "id": "city_manchester",
+      "x": -71.4548,
+      "y": 42.9956,
+      "name": "Manchester Industrial Depot (NH)",
+      "delivery": 24,
+      "pickup": 0,
+      "service_duration": 1200,
+      "tw_early": 9000,
+      "tw_late": 32400,
+      "required": true
+    },
+    {
+      "id": "city_wilmington",
+      "x": -75.5398,
+      "y": 39.7391,
+      "name": "Wilmington Commercial Terminal (DE)",
+      "delivery": 35,
+      "pickup": 0,
+      "service_duration": 1500,
+      "tw_early": 5400,
+      "tw_late": 23400,
+      "required": true
+    }
+  ],
+  "vehicle_types": [
+    {
+      "id": "northeast_freight_semi",
+      "name": "Heavy Freight Semi-Truck",
+      "num_available": 5,
+      "capacity": 160,
+      "fixed_cost": 400,
+      "max_duration": 43200,
+      "unit_distance_cost": 1,
+      "unit_duration_cost": 1
+    }
+  ],
+  "matrix": {
+    "speed_factor": 1.0,
+    "scale_factor": 100.0
+  },
+  "config": {
+    "max_runtime_seconds": 3.0,
+    "max_iterations": 2500,
+    "seed": 42
+  }
+}

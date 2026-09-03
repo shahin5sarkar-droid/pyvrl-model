@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PyVRP Optimization Platform - Vehicle Routing & Route Visualizer</title>
+  <meta name="description" content="Vehicle Routing Problem (VRP) Optimization Model & Route Visualizer powered by PyVRP ILS solver.">
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation Header -->
+    <header class="navbar">
+      <div class="nav-brand">
+        <div class="brand-icon"><i class="fa-solid fa-route"></i></div>
+        <div class="brand-text">
+          <h1>PyVRP <span>Optimizer</span></h1>
+          <p>Vehicle Routing Engine & Interactive Visualizer</p>
+        </div>
+      </div>
+
+      <!-- Quick Control Bar -->
+      <div class="nav-controls">
+        <div class="control-group">
+          <label for="dataset-select"><i class="fa-solid fa-folder-open"></i> Benchmark Preset</label>
+          <select id="dataset-select" class="form-select">
+            <option value="ne_india_real">🇮🇳 Real-Life Northeast India Supply Chain</option>
+            <option value="northeast_real">🗺️ Real-Life US Northeast Freight Hub</option>
+            <option value="nyc_real">🗽 Real-Life NYC E-Commerce Fleet</option>
+            <option value="vrptw">Solomon VRPTW (Time Windows)</option>
+            <option value="cvrp">Solomon CVRP (12 Clients)</option>
+            <option value="vrppd">VRPPD (Pickup & Delivery)</option>
+            <option value="pcvrp">Prize Collecting VRP</option>
+            <option value="multidepot">Multi-Depot VRP</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="runtime-input"><i class="fa-solid fa-stopwatch"></i> Max Time (s)</label>
+          <input type="number" id="runtime-input" class="form-input number-input" value="1.5" min="0.5" max="30" step="0.5">
+        </div>
+
+        <button id="btn-solve" class="btn btn-primary">
+          <i class="fa-solid fa-play"></i> Run Optimizer
+        </button>
+
+        <button id="btn-random-modal" class="btn btn-secondary btn-sm" title="Generate Random VRP Instance">
+          <i class="fa-solid fa-dice"></i> Random
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="main-content">
+      <!-- KPI Metrics Summary Bar -->
+      <section class="kpi-section">
+        <div class="kpi-card" id="kpi-status-card">
+          <div class="kpi-icon status-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-label">Feasibility / Focus</span>
+            <span class="kpi-value" id="kpi-status">Ready</span>
+          </div>
+        </div>
+
+        <div class="kpi-card" id="kpi-filter-card" style="cursor:pointer;" title="Click to show total overview">
+          <div class="kpi-icon" style="background:rgba(59,130,246,0.15);color:var(--accent-blue);"><i class="fa-solid fa-filter"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-label">Selected Focus</span>
+            <span class="kpi-value" id="kpi-filter-text" style="font-size:0.85rem;color:var(--accent-cyan);">All Routes</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon cost-icon"><i class="fa-solid fa-coins"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-label">Total Objective Cost</span>
+            <span class="kpi-value" id="kpi-cost">-</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon distance-icon"><i class="fa-solid fa-ruler"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-label">Total Distance</span>
+            <span class="kpi-value" id="kpi-distance">-</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon duration-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-label">Total Duration</span>
+            <span class="kpi-value" id="kpi-duration">-</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon vehicles-icon"><i class="fa-solid fa-truck"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-label">Vehicles Active</span>
+            <span class="kpi-value" id="kpi-vehicles">-</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon clients-icon"><i class="fa-solid fa-users"></i></div>
+          <div class="kpi-data">
+            <span class="kpi-label">Clients Visited</span>
+            <span class="kpi-value" id="kpi-clients">-</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Central Workspace Grid (Map Left, Inspector Right) -->
+      <div class="workspace-grid">
+        <!-- Left: Leaflet Map Vector Display -->
+        <section class="map-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-map-location-dot"></i> Interactive Route Map & Fleet Vector
+              <span id="problem-name-badge" class="badge badge-info">Loading...</span>
+            </div>
+            <div class="map-actions">
+              <button id="btn-fit-map" class="btn btn-sm btn-secondary" title="Recenter Map View">
+                <i class="fa-solid fa-expand"></i> Recenter Map
+              </button>
+            </div>
+          </div>
+          <div class="card-body map-container">
+            <div id="map"></div>
+
+            <!-- Dynamic Map Legend -->
+            <div class="map-legend">
+              <div class="legend-title">Routes Legend</div>
+              <div id="legend-items" class="legend-items">
+                <div class="legend-item"><span class="legend-color-dot" style="background:#06b6d4;"></span> Depot Location</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: Tabbed Details & Output Inspector -->
+        <section class="details-card">
+          <div class="card-header">
+            <div class="tabs-header">
+              <button class="tab-btn active" data-tab="tab-routes"><i class="fa-solid fa-list-check"></i> Routes</button>
+              <button class="tab-btn" data-tab="tab-locations"><i class="fa-solid fa-location-pen"></i> Edit Locations</button>
+              <button class="tab-btn" data-tab="tab-gantt"><i class="fa-solid fa-chart-gantt"></i> Schedule Timeline</button>
+              <button class="tab-btn" data-tab="tab-convergence"><i class="fa-solid fa-chart-line"></i> Convergence</button>
+              <button class="tab-btn" data-tab="tab-audit"><i class="fa-solid fa-shield-halved"></i> Audit</button>
+              <button class="tab-btn" data-tab="tab-json"><i class="fa-solid fa-code"></i> JSON Spec</button>
+            </div>
+          </div>
+
+          <div class="card-body tab-content-container">
+            <!-- Tab 1: Routes List & Stop Sequence Breakdown -->
+            <div id="tab-routes" class="tab-pane active">
+              <div id="routes-container" class="routes-list">
+                <div class="empty-state">
+                  <i class="fa-solid fa-circle-notch fa-spin"></i>
+                  <p>Click <strong>Run Optimizer</strong> to solve and inspect route sequences.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 2: Editable Locations Table -->
+            <div id="tab-locations" class="tab-pane">
+              <div class="locations-editor-wrapper">
+                <div class="json-actions" style="margin-bottom:0.75rem;">
+                  <button id="btn-add-location" class="btn btn-sm btn-secondary"><i class="fa-solid fa-plus"></i> Add Customer</button>
+                  <button id="btn-save-locations" class="btn btn-sm btn-primary"><i class="fa-solid fa-check"></i> Save & Re-Solve</button>
+                </div>
+                <div id="locations-table-container"></div>
+              </div>
+            </div>
+
+            <!-- Tab 3: Schedule Timeline (Gantt Chart) -->
+            <div id="tab-gantt" class="tab-pane">
+              <div class="chart-wrapper">
+                <canvas id="gantt-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- Tab 4: Solver Convergence Plot -->
+            <div id="tab-convergence" class="tab-pane">
+              <div class="chart-wrapper">
+                <canvas id="convergence-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- Tab 5: Constraint Violation Audit -->
+            <div id="tab-audit" class="tab-pane">
+              <div id="audit-container" class="audit-details"></div>
+            </div>
+
+            <!-- Tab 6: Interactive JSON Problem Specification -->
+            <div id="tab-json" class="tab-pane">
+              <div class="json-editor-wrapper">
+                <div class="json-actions">
+                  <button id="btn-format-json" class="btn btn-sm btn-secondary"><i class="fa-solid fa-wand-magic-sparkles"></i> Format JSON</button>
+                  <button id="btn-apply-json" class="btn btn-sm btn-primary"><i class="fa-solid fa-check"></i> Apply & Solve</button>
+                </div>
+                <textarea id="json-input-editor" class="code-editor" spellcheck="false"></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal 1: Random Instance Generator Modal -->
+  <div id="random-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-dice"></i> Generate Random VRP Instance</h3>
+        <button id="btn-close-modal" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="random-clients-count">Number of Customers</label>
+          <input type="number" id="random-clients-count" class="form-input" value="15" min="5" max="100">
+        </div>
+        <div class="form-group">
+          <label for="random-vehicles-count">Number of Vehicles</label>
+          <input type="number" id="random-vehicles-count" class="form-input" value="4" min="1" max="20">
+        </div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="random-tw-check" checked>
+          <label for="random-tw-check">Include Time Windows & Service Durations</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-cancel-random" class="btn btn-secondary">Cancel</button>
+        <button id="btn-generate-random" class="btn btn-primary"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate & Solve</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add Customer Location Modal -->
+  <div id="add-location-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-location-dot"></i> Add Customer by Location Name</h3>
+        <button id="btn-close-loc-modal" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="new-loc-name">City / Location Name (e.g. Kolkata, Tezpur, Silchar, Gangtok)</label>
+          <input type="text" id="new-loc-name" class="form-input" placeholder="Type city or location name...">
+        </div>
+        <div class="form-group">
+          <label for="new-loc-demand">Delivery Demand Quantity (Pallets / Units)</label>
+          <input type="number" id="new-loc-demand" class="form-input" value="25" min="1" max="500">
+        </div>
+        <div class="form-group">
+          <label for="new-loc-tw">Time Window Schedule (Early / Late Seconds)</label>
+          <div style="display:flex;gap:0.5rem;">
+            <input type="number" id="new-loc-twe" class="form-input" value="3600" placeholder="Early Secs">
+            <input type="number" id="new-loc-twl" class="form-input" value="32400" placeholder="Late Secs">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-cancel-loc" class="btn btn-secondary">Cancel</button>
+        <button id="btn-geocode-add" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass-location"></i> Search Location & Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Double-Click Map / Route Add Location Modal -->
+  <div id="dclick-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-map-pin"></i> Add Location at Clicked Route Point</h3>
+        <button id="btn-close-dclick-modal" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Location Coordinates (Lat, Lng)</label>
+          <input type="text" id="dclick-coords-display" class="form-input" readonly style="background:#1e293b;color:#38bdf8;">
+        </div>
+        <div class="form-group">
+          <label for="dclick-loc-type">Location Type</label>
+          <select id="dclick-loc-type" class="form-select">
+            <option value="client">📍 Customer Stop (Delivery Client)</option>
+            <option value="depot">🏬 Regional Logistics Hub / Depot</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="dclick-loc-name">Location / Stop Name</label>
+          <input type="text" id="dclick-loc-name" class="form-input" placeholder="e.g. Highway Stop Alpha">
+        </div>
+        <div class="form-group" id="dclick-demand-group">
+          <label for="dclick-loc-demand">Delivery Demand (Pallets / Units)</label>
+          <input type="number" id="dclick-loc-demand" class="form-input" value="20" min="1" max="500">
+        </div>
+        <div class="form-group">
+          <label for="dclick-loc-tw">Time Window Schedule (Early / Late Seconds)</label>
+          <div style="display:flex;gap:0.5rem;">
+            <input type="number" id="dclick-loc-twe" class="form-input" value="3600">
+            <input type="number" id="dclick-loc-twl" class="form-input" value="32400">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-cancel-dclick" class="btn btn-secondary">Cancel</button>
+        <button id="btn-confirm-dclick-add" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add Location & Re-Solve</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Route Management & Edit Customer Modal -->
+  <div id="route-edit-modal" class="modal-overlay hidden">
+    <div class="modal-card" style="width: 750px; max-width: 95%;">
+      <div class="modal-header">
+        <h3 id="route-modal-title"><i class="fa-solid fa-route"></i> Route Actions & Customer Editor</h3>
+        <button id="btn-close-route-modal" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body" style="gap:1rem;">
+        <div style="display:flex;gap:0.5rem;justify-content:space-between;align-items:center;background:rgba(15,23,42,0.6);padding:0.75rem;border-radius:8px;border:1px solid var(--border-color);">
+          <span style="font-size:0.85rem;color:var(--text-muted);">Quick Actions:</span>
+          <div style="display:flex;gap:0.5rem;">
+            <button id="btn-route-add-cust" class="btn btn-sm btn-primary"><i class="fa-solid fa-user-plus"></i> Add Customer to Route</button>
+            <button id="btn-route-focus-kpi" class="btn btn-sm btn-secondary"><i class="fa-solid fa-filter"></i> Focus KPI Dashboard</button>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <h4 style="font-size:0.85rem;color:var(--accent-cyan);font-weight:700;"><i class="fa-solid fa-pen-to-square"></i> Edit Customer Stops on This Route</h4>
+          <div id="route-clients-table-container"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-cancel-route-modal" class="btn btn-secondary">Close</button>
+        <button id="btn-save-route-clients" class="btn btn-primary"><i class="fa-solid fa-check"></i> Save Changes & Re-Solve</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <!-- Application JS -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
